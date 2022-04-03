@@ -1,0 +1,74 @@
+name: homebrew
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  homebrew:
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      AWS_SDK_LOAD_CONFIG: true
+      AWS_PROFILE: cloudgraph-iac
+      NODE_ENV: "cicd"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          token: ${{secrets.GH_TOKEN}}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: "https://registry.npmjs.org"
+          cache: yarn
+
+      - name: Mkdir .aws
+        run: mkdir -p ~/.aws
+
+      - name: Set .aws/config
+        run: |
+          cat << EOF > ~/.aws/config
+          [default]
+          region=us-east-1
+          output=json
+
+          [profile cloudgraph-iac]
+          role_arn = ${{ secrets.AWS_ROLE_ARN }}
+          source_profile = default
+          EOF
+      - name: Set .aws/credentials
+        run: |
+          cat << EOF > ~/.aws/credentials
+          [default]
+          aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key =  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          EOF
+
+      - name: Install Packages
+        run: yarn install --prefer-offline --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Add SSH key
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          echo "${{ secrets.AUTODEPLOY_SSH_KEY }}" > ~/.ssh/github_actions
+          chmod 600 ~/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add ~/.ssh/github_actions
+
+      - name: Homebrew
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          git config --global user.email "no-reply@autocloud.dev"
+          git config --global user.name "autocloud-deploy-bot"
+          yarn homebrew
