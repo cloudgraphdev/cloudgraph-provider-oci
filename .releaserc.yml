@@ -1,6 +1,9 @@
 ---
 branches:
+  - name: alpha
+  - name: beta
   - name: main
+
 plugins:
   - "@semantic-release/commit-analyzer"
   - "@semantic-release/release-notes-generator"
