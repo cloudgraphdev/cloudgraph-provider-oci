@@ -9,6 +9,7 @@ on:
       - main
       - alpha
       - beta
+      - chore/pipeline-test
 
 jobs:
   build:
@@ -47,13 +48,13 @@ jobs:
       - name: Test
         run: yarn lint
 
-      - name: Publish
-        run: npx semantic-release -r $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-          GITHUB_TOKEN: ${{secrets.gh_token}}
-          GIT_AUTHOR_NAME: "autocloud-deploy-bot"
-          GIT_AUTHOR_EMAIL: "no-reply@autocloud.dev"
-          GIT_COMMITTER_NAME: "autocloud-deploy-bot"
-          GIT_COMMITTER_EMAIL: "no-reply@autocloud.dev"
-          NODE_ENV: "cicd"
+      # - name: Publish
+      #   run: npx semantic-release -r $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      #     GITHUB_TOKEN: ${{secrets.gh_token}}
+      #     GIT_AUTHOR_NAME: "autocloud-deploy-bot"
+      #     GIT_AUTHOR_EMAIL: "no-reply@autocloud.dev"
+      #     GIT_COMMITTER_NAME: "autocloud-deploy-bot"
+      #     GIT_COMMITTER_EMAIL: "no-reply@autocloud.dev"
+      #     NODE_ENV: "cicd"
