@@ -1,7 +1,11 @@
 ---
 branches:
   - name: alpha
+    channel: alpha
+    prerelease: true
   - name: beta
+    channel: beta
+    prerelease: true
   - name: main
 
 plugins:

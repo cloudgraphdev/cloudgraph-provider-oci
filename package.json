@@ -4,7 +4,6 @@
   "description": "cloud-graph provider plugin for Oracle Cloud used to fetch OCI cloud data.",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
-    "tag": "latest",
     "access": "public"
   },
   "homepage": "https://www.cloudgraph.dev/",
