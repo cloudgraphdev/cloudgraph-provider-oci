@@ -39,7 +39,9 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install Packages
-        run: yarn install --frozen-lockfile --prefer-offline
+        # NOTE: The --ignore-scripts flag is required to prevent leakage of NPM_TOKEN value
+        # See https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#use-private-packages
+        run: yarn install --frozen-lockfile --prefer-offline --ignore-scripts
 
       - name: Build
         run: yarn prepack
