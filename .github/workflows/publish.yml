@@ -52,7 +52,6 @@ jobs:
         env:
           NODE_ENV: "cicd"
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-          NPM_TOKEN: ${{secrets.npm_token}}
           GITHUB_TOKEN: ${{secrets.gh_token}}
           GIT_AUTHOR_NAME: "autocloud-deploy-bot"
           GIT_AUTHOR_EMAIL: "no-reply@autocloud.dev"
