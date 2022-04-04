@@ -47,7 +47,7 @@
     "@autocloud/eslint-config": "^0.1.0",
     "@graphql-codegen/cli": "^2.4.0",
     "@graphql-codegen/typescript": "1.23.0",
-    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.1",
     "@semantic-release/npm": "^9.0.1",
